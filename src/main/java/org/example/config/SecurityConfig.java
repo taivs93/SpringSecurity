@@ -1,6 +1,8 @@
 package org.example.config;
 
+import org.example.security.exception.CustomAccessDeniedHandler;
 import org.example.security.jwt.JWTFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -40,6 +42,9 @@ public class SecurityConfig {
         return authConfig.getAuthenticationManager();
     }
 
+    @Autowired
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
@@ -48,13 +53,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request ->
                         request.requestMatchers("/user/**").permitAll()
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
-                                .requestMatchers("/api/users/all").hasAuthority("VIEW_ALL_USERS")
-                                .requestMatchers("/api/users/create").hasAuthority("CREATE_USER")
-                                .requestMatchers("/api/users/delete/**").hasAuthority("DELETE_USER")
-                                .requestMatchers("/api/profile/**").hasAnyAuthority("VIEW_PROFILE", "EDIT_PROFILE")
-                                .requestMatchers("/premium/**").hasAuthority("ACCESS_PREMIUM_CONTENT")
+                                .requestMatchers("/vip/premium-content").hasAuthority("ACCESS_PREMIUM_CONTENT")
+                                .requestMatchers("/vip/support_line").hasAnyRole("VIP")
                                 .anyRequest().authenticated()
-                );
+                )
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .accessDeniedHandler(customAccessDeniedHandler));
         http.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
@@ -63,7 +67,7 @@ public class SecurityConfig {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://localhost:8899"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type", "X-XSRF-TOKEN"));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

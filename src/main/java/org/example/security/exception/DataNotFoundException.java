@@ -1,4 +1,4 @@
-package org.example.exception;
+package org.example.security.exception;
 
 public class DataNotFoundException extends RuntimeException {
     public DataNotFoundException(String message) {

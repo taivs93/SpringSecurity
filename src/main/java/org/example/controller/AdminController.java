@@ -32,9 +32,9 @@ public class AdminController {
         return ResponseEntity.ok("Viewing all users");
     }
 
-    @PreAuthorize("hasAuthority('ACCESS_PREMIUM_CONTENT')")
-    @GetMapping("/premium-content")
-    public ResponseEntity<String> getPremiumContent() {
-        return ResponseEntity.ok("Accessing premium content");
+    @PreAuthorize("hasAuthority('VIEW_REPORTS')")
+    @GetMapping("/view_reports")
+    public ResponseEntity<String> getViewReports() {
+        return ResponseEntity.ok("Viewing reports");
     }
 }

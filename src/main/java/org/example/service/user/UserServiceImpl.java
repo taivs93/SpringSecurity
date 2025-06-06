@@ -1,13 +1,11 @@
 package org.example.service.user;
 import org.example.dto.request.user.UserLoginRequestDTO;
 import org.example.dto.request.user.UserRegisterRequestDTO;
-import org.example.exception.DataNotFoundException;
+import org.example.security.exception.DataNotFoundException;
 import org.example.model.Role;
 import org.example.model.User;
 import org.example.repository.RoleRepository;
 import org.example.repository.UserRepository;
-import org.example.security.jwt.JWTUtil;
-import org.example.security.service.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
