@@ -15,7 +15,6 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString(exclude = {"users", "permissions"})
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Role {
     public static String ADMIN = "ADMIN";
     public static String NORMAL = "NORMAL";

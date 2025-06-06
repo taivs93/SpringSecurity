@@ -2,7 +2,6 @@ package org.example.security.service;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.model.User;
 import org.springframework.security.core.GrantedAuthority;
