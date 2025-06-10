@@ -10,8 +10,7 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     @EntityGraph(attributePaths = {"roles"})
-    @Query("SELECT u FROM User u WHERE u.userName = :userName")
-    Optional<User> findByUserNameWithEntityGraph(@Param("userName") String userName);
+    Optional<User> findByUserNameWithEntityGraph(String userName);
 
     boolean existsByUserName(String userName);
     boolean existsByTel(String tel);
